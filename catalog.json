@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "solutions": [
+    {
+      "id": "fiserv-dna-core",
+      "name": "Fiserv DNA — Core",
+      "summary": "Account, customer, and transaction jobs for Fiserv DNA.",
+      "targetSystem": "Fiserv DNA",
+      "version": "1.0.0",
+      "support": "SUPPORTED",
+      "origin": "IntellaWorx",
+      "licenseTier": "standard",
+      "icon": "fiserv-dna.svg",
+      "path": "solutions/fiserv-dna-core"
+    }
+  ]
+}
