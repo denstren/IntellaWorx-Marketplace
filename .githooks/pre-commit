@@ -1,0 +1,59 @@
+#!/bin/sh
+# Pre-commit secret scan.
+#
+# Prefers gitleaks (full ruleset) when installed; otherwise falls back to a
+# built-in high-signal regex scan of *staged additions* so the hook is useful
+# even before gitleaks is installed.
+#
+# One-time setup per clone:   git config core.hooksPath .githooks
+# Bypass (use sparingly, only for a verified false positive):  git commit --no-verify
+# Inline allow for one line:  append the comment  gitleaks:allow
+#
+# See .githooks/README.md for details.
+
+set -u
+
+RED=''; YEL=''; NC=''
+if [ -t 2 ]; then RED='\033[0;31m'; YEL='\033[1;33m'; NC='\033[0m'; fi
+
+# ---------------------------------------------------------------------------
+# 1) Preferred path: gitleaks, if this build supports the `protect` subcommand.
+# ---------------------------------------------------------------------------
+if command -v gitleaks >/dev/null 2>&1 && gitleaks protect --help >/dev/null 2>&1; then
+    if gitleaks protect --staged --redact; then
+        exit 0
+    fi
+    printf "%bgitleaks: potential secret(s) in staged changes — commit blocked.%b\n" "$RED" "$NC" >&2
+    printf "If this is a verified false positive, append 'gitleaks:allow' to the line, or use 'git commit --no-verify'.\n" >&2
+    exit 1
+fi
+
+# ---------------------------------------------------------------------------
+# 2) Fallback: built-in scan of staged additions for high-confidence secrets.
+#    Covers the patterns most likely to be catastrophic if leaked. Install
+#    gitleaks for full coverage: https://github.com/gitleaks/gitleaks
+# ---------------------------------------------------------------------------
+printf "%bgitleaks not found — using the built-in fallback secret scan (install gitleaks for full coverage).%b\n" "$YEL" "$NC" >&2
+
+# GitHub tokens (incl. the fine-grained github_pat_ that leaked), AWS access key
+# IDs, PEM private-key headers, Slack tokens, Google API keys.
+PATTERN='github_pat_[0-9A-Za-z_]{20,}|gh[pousr]_[0-9A-Za-z]{20,}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY-----|xox[baprs]-[0-9A-Za-z-]{10,}|AIza[0-9A-Za-z_-]{30,}'
+
+# Added lines only (exclude the hooks dir so this script's own pattern string
+# and the README examples never trip it). Strip the leading '+' before matching.
+ADDED=$(git diff --cached --no-color -U0 --diff-filter=ACMR -- . ':(exclude).githooks' \
+        | grep -E '^\+[^+]' | sed 's/^+//')
+
+# Honor an inline 'gitleaks:allow' escape, then look for the patterns.
+HITS=$(printf '%s\n' "$ADDED" | grep -Ev 'gitleaks:allow' | grep -Eni "$PATTERN" || true)
+
+if [ -n "$HITS" ]; then
+    printf "%bPotential secret(s) detected in staged additions — commit blocked:%b\n" "$RED" "$NC" >&2
+    # Redact the matched secret material before echoing it back.
+    printf '%s\n' "$HITS" \
+        | sed -E 's/(github_pat_|gh[pousr]_|AKIA|AIza|xox[baprs]-)[0-9A-Za-z_-]+/\1<REDACTED>/g' >&2
+    printf "If this is a verified false positive, append 'gitleaks:allow' to the line, or use 'git commit --no-verify'.\n" >&2
+    exit 1
+fi
+
+exit 0
