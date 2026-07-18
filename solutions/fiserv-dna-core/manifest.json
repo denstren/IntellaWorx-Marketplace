@@ -1,12 +1,12 @@
 {
   "id": "fiserv-dna-core",
-  "description": "Pre-built integration jobs for Fiserv DNA core banking: account inquiry and maintenance, customer lookup, and transaction extract flows.\n\nThis is **sample catalog content** used to exercise the marketplace; the bundle is an empty placeholder until install support ships.",
+  "description": "Sample integration jobs for Fiserv DNA core banking: a simulated account inquiry and a simulated transaction extract, plus the base-URL variable they read.\n\nThis is **sample catalog content** used to exercise the marketplace. The jobs run as-is (they log a simulated result); replace the script bodies with real DNA API calls using the connection you supply.",
   "requiredCredentials": [
-    { "name": "DNA API", "type": "CONNECTION", "note": "Base URL + service account" }
+    { "name": "DNA API", "type": "CONNECTION", "note": "Base URL + service account. Not bundled - supply your own when wiring the scripts to a real DNA instance." }
   ],
-  "contents": { "jobs": 6, "scripts": 4, "connections": 1, "variables": 3, "conditions": 0 },
+  "contents": { "jobs": 2, "scripts": 2, "connections": 0, "variables": 1, "conditions": 0 },
   "compatibility": { "minIntellaWorxVersion": "1.0.0" },
   "changelog": [
-    { "version": "1.0.0", "notes": "Initial release." }
+    { "version": "1.0.0", "notes": "Initial release: simulated account-inquiry and transaction-extract sample jobs with a real install bundle." }
   ]
 }
