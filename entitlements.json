@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "default": { "tier": "standard", "allow": ["*"] },
+  "customers": {
+    "example-trial": { "tier": "trial", "allow": [] },
+    "example-standard": { "tier": "standard", "allow": ["fiserv-dna-core"] }
+  }
+}
