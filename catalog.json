@@ -11,13 +11,5 @@
     "licenseTier" : "standard",
     "icon" : "fiserv-dna.svg",
     "path" : "solutions/fiserv-dna-core"
-  }, {
-    "id" : "nothing",
-    "name" : "Travis_Solution",
-    "summary" : "Solution that doesn't do anything",
-    "version" : "0.0.1",
-    "support" : "SUPPORTED",
-    "origin" : "IntellaWorx",
-    "path" : "solutions/nothing"
   } ]
 }
