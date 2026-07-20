@@ -1,17 +1,23 @@
 {
-  "schemaVersion": 1,
-  "solutions": [
-    {
-      "id": "fiserv-dna-core",
-      "name": "Fiserv DNA — Core",
-      "summary": "Account, customer, and transaction jobs for Fiserv DNA.",
-      "targetSystem": "Fiserv DNA",
-      "version": "1.0.0",
-      "support": "SUPPORTED",
-      "origin": "IntellaWorx",
-      "licenseTier": "standard",
-      "icon": "fiserv-dna.svg",
-      "path": "solutions/fiserv-dna-core"
-    }
-  ]
+  "schemaVersion" : 1,
+  "solutions" : [ {
+    "id" : "fiserv-dna-core",
+    "name" : "Fiserv DNA — Core",
+    "summary" : "Account, customer, and transaction jobs for Fiserv DNA.",
+    "targetSystem" : "Fiserv DNA",
+    "version" : "1.0.0",
+    "support" : "SUPPORTED",
+    "origin" : "IntellaWorx",
+    "licenseTier" : "standard",
+    "icon" : "fiserv-dna.svg",
+    "path" : "solutions/fiserv-dna-core"
+  }, {
+    "id" : "nothing",
+    "name" : "Travis_Solution",
+    "summary" : "Solution that doesn't do anything",
+    "version" : "0.0.1",
+    "support" : "SUPPORTED",
+    "origin" : "IntellaWorx",
+    "path" : "solutions/nothing"
+  } ]
 }
